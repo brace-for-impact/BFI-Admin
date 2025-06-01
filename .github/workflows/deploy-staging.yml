@@ -34,6 +34,6 @@ jobs:
           ssh -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             cd /home/ubuntu/caution/deployments/bfi/bfi-admin
             git pull origin staging
-            docker compose -f config/docker-compose.staging.yml pull
-            docker compose -f config/docker-compose.staging.yml up -d
+            docker compose -f config/docker-compose.staging.yaml pull
+            docker compose -f config/docker-compose.staging.yaml up -d
           EOF
