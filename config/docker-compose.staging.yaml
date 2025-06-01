@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  bfi-staging-admin-traefik:
+    image: traefik:v2.11
+    command:
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+    ports:
+      - "51031:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  bfi-staging-admin:
+    image: braceforimpact/bfi-staging-admin:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bfi_staging_admin.rule=Host(`bfi-staging-admin.brace-for-impact.com`)"
+      - "traefik.http.routers.bfi_staging_admin.entrypoints=web"
+      - "traefik.http.services.bfi_staging_admin.loadbalancer.server.port=80"
+    deploy:
+      replicas: 2
+    restart: always

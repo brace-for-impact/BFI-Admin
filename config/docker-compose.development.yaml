@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  bfi-development-admin-traefik:
+    image: traefik:v2.11
+    command:
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+    ports:
+      - "51031:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  bfi-development-admin:
+    build:
+      context: ../.
+      dockerfile: Dockerfile
+      args:
+        MODE: development
+    env_file:
+      - ./../.env.development
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bfi_development_admin.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.bfi_development_admin.entrypoints=web"
+      - "traefik.http.services.bfi_development_admin.loadbalancer.server.port=80"
+    deploy:
+      replicas: 2
+    restart: always
