@@ -7,7 +7,7 @@ services:
       - --providers.docker=true
       - --entrypoints.web.address=:80
     ports:
-      - "51031:80"
+      - "51061:80"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
